@@ -4,11 +4,7 @@ var module = angular.module('starWars.controllers', []);
 
 module.controller("PeopleController", ["$scope", "PeopleService",
     function($scope, PeopleService) {
-        $scope.peopleDto = {            
-            name: null,
-            starships: []
-        };
-        $scope.starships = [];
+
 		$scope.orderByField = 'name';
 		$scope.reverseSort = false;
 		$scope.createReverseSort = false;
@@ -21,12 +17,6 @@ module.controller("PeopleController", ["$scope", "PeopleService",
 		}, function(value) {
 			console.log("no callback");
 		});
-
-		$scope.starships = [];
-		$scope.peopleDto = {			
-			name : null,
-			starships : []
-		};
 
 		$scope.sort = function(){
 	        PeopleService.sort($scope.orderByField, $scope.reverseSort)
