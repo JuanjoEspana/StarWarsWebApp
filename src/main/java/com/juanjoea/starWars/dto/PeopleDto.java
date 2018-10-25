@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "name", "height", "mass", "hair_color", "skin_color", "eye_color", "birth_year", "gender",
 		"homeworld", "films", "species", "vehicles", "starships", "created", "edited", "url" })
-public class PeopleDto {
+public class PeopleDto extends SortableDto{
 
 	@JsonProperty("name")
 	private String name;

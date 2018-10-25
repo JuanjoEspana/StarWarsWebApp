@@ -3,32 +3,56 @@
 <head>
     <meta charset="ISO-8859-1">
     <title>Main Page</title>
+    <script src="js/lib/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>    
+	<script src="js/lib/ui-bootstrap-tpls-2.5.0.min.js"></script>
+	<script src="js/app/app.js"></script>
+	<script src="js/app/PeopleController.js"></script>
+	<script src="js/app/PeopleService.js"></script>
+	<link rel="stylesheet" href="css/lib/bootstrap.min.css"/>
+	<link rel="stylesheet" href="css/app/app.css"/>
+	<link rel="stylesheet"; href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">    
 </head>
 <body ng-app="starWars">
 <hr/>
-<div class="container" ng-controller="PeopleController">
+<div class="container" ng-controller="PeopleController" id="PeopleController">
     <div class="row">
-        <label>User</label> <input type="text" ng-model="peopleDto.name" class="input-sm spacing"/>
-      
+        <label>Star Wars characters</label>     
     </div>
     <hr/>
     <div class="row">
-        <p>{{allPeople | json}}</p>
-    </div>
+        <!-- <p>{{allPeople | json}}</p> -->
+		<table ng-table ="peopleTable" class="table table-striped">
+		<thead>
+		<tr>
+		  <th>
+		      <a href="javascript:angular.element(document.getElementById('PeopleController')).scope().sort();"
+          		ng-click="orderByField='name'; reverseSort = !reverseSort">
+         	 First Name <span ng-show="orderByField == 'name'"><span ng-show="!reverseSort">v</span><span ng-show="reverseSort">^</span></span>
+          	</a>
+		  </th>
+		  <th>Gender</th>
+		  <th>Starships</th>
+		  <th>
+		     <a href="javascript:angular.element(document.getElementById('PeopleController')).scope().dateSort();"
+          		ng-click="orderByField='created'; createReverseSort = !createReverseSort">
+         	 Created <span ng-show="orderByField == 'created'"><span ng-show="!createReverseSort">v</span><span ng-show="createReverseSort">^</span></span>
+         	 </a>
+		  </th>
+		</tr>
+		</thead>
+		<tbody>
+		  <tr ng-repeat="x in allPeople">
+		    <td>{{ x.name }}</td>
+		    <td>{{ x.gender }}</td>
+		    <td>{{ x.starships || "None"}}</td>
+		    <td>{{ x.created }}</td>
+		  </tr>
+		</tbody>
+		</table>
+	</div>
     <hr/>
-    <div class="row" ng-repeat="user in allPeople">
-        <div class="">
-            <h3>{{people.name}}</h3>
-            <span ng-repeat="starship in user.starships" class="spacing">{{starship}}</span>
-        </div>
-    </div>
 </div>
 </body>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
-<script src="js/lib/ui-bootstrap-tpls-2.5.0.min.js"></script>
-<script src="js/app/app.js"></script>
-<script src="js/app/PeopleController.js"></script>
-<script src="js/app/PeopleService.js"></script>
-<link rel="stylesheet" href="css/lib/bootstrap.min.css"/>
-<link rel="stylesheet" href="css/app/app.css"/>
+
 </html>

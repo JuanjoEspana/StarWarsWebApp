@@ -1,32 +1,38 @@
 package com.juanjoea.starWars.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.juanjoea.starWars.dto.PeopleDto;
 import com.juanjoea.starWars.service.PeopleService;
 
-@Controller
+@RestController
 public class PeopleController {
 
 	@Autowired
 	PeopleService peopleService;
 	
-	@RequestMapping("/people")
-	public String home() {
-		return "people";
-	}
+	List<PeopleDto> people = new ArrayList<PeopleDto>();
 	
 	@RequestMapping("/people/getAllPeople")
 	public List<PeopleDto> getAllPeople() {
-		return peopleService.getAllPeople();
+		this.people = peopleService.getAllPeople();
+		return people;
 	}
 
-	/*@RequestMapping(value = Constants.SAVE_USER, method = RequestMethod.POST)
-	public void savePeople(@RequestBody PeopleDto userDto) {
-		peopleService.savePeople(userDto);
-	}*/
+	@SuppressWarnings("unchecked")
+    @RequestMapping("/people/sort/{field}/{order}")
+	public List<PeopleDto> sort(@PathVariable final String field, @PathVariable final String order){
+	    
+	    if(!people.isEmpty()) {
+	        this.people = (List<PeopleDto>) peopleService.sort(this.people, field, order);
+	    }
+	    
+	    return people;
+	}
 }

@@ -4,10 +4,8 @@ import java.util.List;
 
 import com.juanjoea.starWars.dto.PeopleDto;
 
-public interface PeopleService {
+public interface PeopleService extends SortableEntityService{
 
-	 PeopleDto getPeopleById(Integer userId);
-	 void savePeople(PeopleDto userDto);
 	 List < PeopleDto > getAllPeople();
 	 
 }

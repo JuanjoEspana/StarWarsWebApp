@@ -7,5 +7,9 @@ angular.module('starWars.services', []).factory('PeopleService',
     service.getAllPeople = function() {
         return $http.get(CONSTANTS.getAllPeople);
     }
+    
+    service.sort = function(field, order){
+    	return $http.get(CONSTANTS.sort+"/"+field+"/"+order)
+    }
     return service;
 }]);

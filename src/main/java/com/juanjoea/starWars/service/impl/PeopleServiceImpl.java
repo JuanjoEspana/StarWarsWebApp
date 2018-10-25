@@ -13,27 +13,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.juanjoea.starWars.dto.PeopleDto;
-import com.juanjoea.starWars.dto.Result;
+import com.juanjoea.starWars.dto.PeopleResult;
+import com.juanjoea.starWars.dto.StarshipDto;
+import com.juanjoea.starWars.dto.StarshipResult;
 import com.juanjoea.starWars.service.PeopleService;
 
 @Service
-public class PeopleServiceImpl implements PeopleService {
-
-	@Override
-	public PeopleDto getPeopleById(Integer userId) {
-		//return UserConverter.entityToDto(userRepository.getOne(userId));
-		return null;
-	}
-
-	@Override
-	public void savePeople(PeopleDto userDto) {
-		//userRepository.save(UserConverter.dtoToEntity(userDto));
-	}
+public class PeopleServiceImpl extends SortableEntityService implements PeopleService{
 
 	@Override
 	public List<PeopleDto> getAllPeople() {
 		final List<PeopleDto> peopleList = new ArrayList<PeopleDto>();
-		Result result = getPeopleFromRestServer("https://swapi.co/api/people/");
+		PeopleResult result = getPeopleFromRestServer("https://swapi.co/api/people/");
 		
 		peopleList.addAll(result.getResults());
 		
@@ -42,10 +33,27 @@ public class PeopleServiceImpl implements PeopleService {
 			peopleList.addAll(result.getResults());
 		}
 	    
+		for(final PeopleDto people : peopleList) {
+			final List<String> starshipList = new ArrayList<String>();
+		
+			for(final String starshipUrl : people.getStarships()) {
+				final StarshipDto starshipResult = 
+						getStarshipFromRestServer(starshipUrl);
+				if(null != starshipResult){
+					starshipList.add(starshipResult.getName());
+				}
+			}
+			if(starshipList.isEmpty()) {
+				people.setStarships(null);
+			} else {
+				people.setStarships(starshipList);
+			}
+		}
+		
 		return peopleList;
 	}
 
-	private Result getPeopleFromRestServer(final String urlOverHttps) {
+	private PeopleResult getPeopleFromRestServer(final String urlOverHttps) {
 		CloseableHttpClient httpClient
 	      = HttpClients.custom()
 	        .setSSLHostnameVerifier(new NoopHostnameVerifier())
@@ -54,12 +62,26 @@ public class PeopleServiceImpl implements PeopleService {
 	      = new HttpComponentsClientHttpRequestFactory();
 	    requestFactory.setHttpClient(httpClient);
 	    
-	    ResponseEntity<Result> response 
+	    ResponseEntity<PeopleResult> response 
 	      = new RestTemplate(requestFactory).exchange(
-	      urlOverHttps, HttpMethod.GET, null, Result.class);
+	      urlOverHttps, HttpMethod.GET, null, PeopleResult.class);
 
 	    return response.getBody();
 	}
-
 	
+	private StarshipDto getStarshipFromRestServer(final String urlOverHttps) {
+		CloseableHttpClient httpClient
+	      = HttpClients.custom()
+	        .setSSLHostnameVerifier(new NoopHostnameVerifier())
+	        .build();
+	    HttpComponentsClientHttpRequestFactory requestFactory 
+	      = new HttpComponentsClientHttpRequestFactory();
+	    requestFactory.setHttpClient(httpClient);
+	    
+	    ResponseEntity<StarshipDto> response 
+	      = new RestTemplate(requestFactory).exchange(
+	      urlOverHttps, HttpMethod.GET, null, StarshipDto.class);
+
+	    return response.getBody();
+	}
 }

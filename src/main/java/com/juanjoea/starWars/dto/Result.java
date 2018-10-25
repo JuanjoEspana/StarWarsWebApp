@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "previous",
     "results"
 })
-public class Result {
+public abstract class Result {
 
     @JsonProperty("count")
     private Integer count;
@@ -21,9 +21,7 @@ public class Result {
     private String next;
     @JsonProperty("previous")
     private String previous;
-    @JsonProperty("results")
-    private List<PeopleDto> results;
-    
+        
     @JsonProperty("count")
 	public Integer getCount() {
 		return count;
@@ -48,14 +46,5 @@ public class Result {
 	public void setPrevious(String previous) {
 		this.previous = previous;
 	}
-    @JsonProperty("results")
-	public List<PeopleDto> getResults() {
-		return results;
-	}
-    @JsonProperty("results")
-	public void setResults(List<PeopleDto> results) {
-		this.results = results;
-	}
-    
     
 }
