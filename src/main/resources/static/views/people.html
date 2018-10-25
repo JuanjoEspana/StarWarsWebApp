@@ -20,15 +20,14 @@
         <label>Star Wars characters</label>     
     </div>
     <hr/>
-    <div class="row">
-        <!-- <p>{{allPeople | json}}</p> -->
+    <div class="row">        
 		<table ng-table ="peopleTable" class="table table-striped">
 		<thead>
 		<tr>
 		  <th>
 		      <a href="javascript:angular.element(document.getElementById('PeopleController')).scope().sort();"
           		ng-click="orderByField='name'; reverseSort = !reverseSort">
-         	 First Name <span ng-show="orderByField == 'name'"><span ng-show="!reverseSort">v</span><span ng-show="reverseSort">^</span></span>
+         	 Name <span ng-show="orderByField == 'name'"><span ng-show="!reverseSort">v</span><span ng-show="reverseSort">^</span></span>
           	</a>
 		  </th>
 		  <th>Gender</th>

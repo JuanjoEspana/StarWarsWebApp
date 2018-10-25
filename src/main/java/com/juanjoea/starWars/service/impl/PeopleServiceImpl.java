@@ -33,6 +33,12 @@ public class PeopleServiceImpl extends SortableEntityService implements PeopleSe
 			peopleList.addAll(result.getResults());
 		}
 	    
+		getStarshipForPeople(peopleList);
+		
+		return peopleList;
+	}
+
+	private void getStarshipForPeople(final List<PeopleDto> peopleList) {
 		for(final PeopleDto people : peopleList) {
 			final List<String> starshipList = new ArrayList<String>();
 		
@@ -49,8 +55,6 @@ public class PeopleServiceImpl extends SortableEntityService implements PeopleSe
 				people.setStarships(starshipList);
 			}
 		}
-		
-		return peopleList;
 	}
 
 	private PeopleResult getPeopleFromRestServer(final String urlOverHttps) {
